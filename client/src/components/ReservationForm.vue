@@ -1,5 +1,6 @@
 <template>
   <v-form ref="resForm" class="resForm" v-model="valid">
+    <h2 class="mt-2 mb-4">New Reservation</h2>
     <v-text-field v-model="form.name" :rules="nameRules" label="Name" placholder="Name" outlined></v-text-field>
     <v-text-field v-model="form.email" :rules="emailRules" label="Email" placholder="Email" outlined></v-text-field>
     <v-text-field v-model="form.partySize" type="number" :rules="partySizeRules" label="Party Size" placholder="Party Size" outlined></v-text-field>
@@ -16,6 +17,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'ReservationForm',
   data: () => ({
@@ -47,7 +50,9 @@ export default {
     },
     updateAvailableTimes () {
       this.datePicker = false;
-      this.availableTimes = [ '2:00', '2:15', '2:30', '2:45', '3:00', '3:15', '3:30', '3:45' ];
+      axios.get(`http://localhost:9090/inventory?date=${this.form.date}`).then(response => {
+        this.availableTimes = response.data;
+      });
     },
     reserve () {
       if (this.valid) {

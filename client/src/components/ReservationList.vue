@@ -1,6 +1,6 @@
 <template>
   <v-list two-line class="resList">
-    <h2>Today's Reservations</h2>
+    <h2>All Reservations</h2>
     <v-list-item-group>
       <v-list-item v-for="res in reservations" :key="res.id">
         <v-list-item-avatar>

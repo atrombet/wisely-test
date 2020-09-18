@@ -13,6 +13,8 @@ let reservations = [
   { id: 2, name: 'Joe', email: 'atrombet@gmail.com', partySize: 5, date: '2020-9-16', time: '2:30' }
 ];
 
+let inventory = [ '2:00', '2:15', '2:30', '2:45', '3:00', '3:15', '3:30', '3:45' ];
+
 app.post('/reservations', (req: Request, res: Response) => {
   const { body } = req;
   const id = Math.max(...reservations.map(r => r.id)) + 1;
@@ -23,6 +25,15 @@ app.post('/reservations', (req: Request, res: Response) => {
 
 app.get('/reservations', (req: Request, res: Response) => {
   res.status(200).json(reservations);
+});
+
+app.get('/inventory', (req: Request, res: Response) => {
+  const date = req.query.date;
+  if (!!date && date !== 'undefined') {
+    res.status(200).json(inventory);
+  } else {
+    res.status(400).send('Please pass a date query. Ex: /inventory?date=2020-9-20');
+  }
 });
 
 app.listen(port, () => {
