@@ -2,15 +2,22 @@
   <div>
     <h1 class="mb-8 text-center">Reservations</h1>
     <div class="d-flex">
-      <ReservationForm class="mr-16" />
+      <ReservationForm ref="formComponent" class="mr-16" v-on:new-reservation="onNewReservation" />
       <ReservationList :reservations="reservations" />
     </div>
+    <v-snackbar color="success" v-model="showSnackbar" top>
+      {{snackbarMessage}}
+      <template v-slot:action="{ attrs }">
+        <v-btn text v-bind="attrs" @click="showSnackbar = false">OK</v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
 <script>
 import ReservationForm from '../components/ReservationForm';
 import ReservationList from '../components/ReservationList';
+import axios from 'axios';
 
 export default {
   components: {
@@ -19,25 +26,24 @@ export default {
   },
   data: () => ({
     reservations: [],
-    valid: true,
-    name: '',
-    nameRules: [
-      v => !!v || 'Name is required'
-    ],
-    email: '',
-    emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-    ],
-    partySize: 0,
-    date: '',
-    time: ''
+    showSnackbar: false,
+    snackbarMessage: ''
   }),
   mounted () {
-    this.reservations = [
-      { id: 1, name: 'Anthony', email: 'atrombet@gmail.com', partySize: 4, date: '2020-9-16', time: '2:15' },
-      { id: 1, name: 'Joe', email: 'atrombet@gmail.com', partySize: 5, date: '2020-9-16', time: '2:30' }
-    ];
+    axios.get('http://localhost:9090/reservations').then(response => {
+      this.reservations = response.data;
+    });
+  },
+  methods: {
+    onNewReservation (reservation) {
+      axios.post('http://localhost:9090/reservations', reservation).then(response => {
+        const newRes = response.data;
+        this.reservations.push(newRes);
+        this.$refs.formComponent.clear();
+        this.snackbarMessage = 'Reservation created!';
+        this.showSnackbar = true;
+      });
+    }
   }
 }
 </script>
