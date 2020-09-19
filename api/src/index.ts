@@ -9,8 +9,9 @@ app.use(bodyparser.json({ type: 'application/json' }));
 app.use(bodyparser.urlencoded({ extended: true }));
 
 let reservations = [
-  { id: 1, name: 'Anthony', email: 'atrombet@gmail.com', partySize: 4, date: '2020-9-16', time: '2:15' },
-  { id: 2, name: 'Joe', email: 'atrombet@gmail.com', partySize: 5, date: '2020-9-16', time: '2:30' }
+  { id: 1, name: 'Anthony', email: 'anthony@email.com', partySize: 4, date: '2020-09-16', time: '2:15' },
+  { id: 2, name: 'Joe', email: 'joe@email.com', partySize: 5, date: '2020-09-16', time: '2:30' },
+  { id: 3, name: 'Teri', email: 'teri@email.com', partySize: 3, date: '2020-09-17', time: '3:00' },
 ];
 
 let inventory = [ '2:00', '2:15', '2:30', '2:45', '3:00', '3:15', '3:30', '3:45' ];
