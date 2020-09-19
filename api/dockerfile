@@ -1,0 +1,15 @@
+FROM node:erbium-alpine
+ARG BUILD_ENV=development
+
+WORKDIR /app
+
+COPY ./api/package.json /app
+RUN yarn add global typescript
+
+RUN yarn
+
+COPY ./api /app
+
+EXPOSE 9090
+
+CMD ["yarn", "dev"]

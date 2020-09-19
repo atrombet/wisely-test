@@ -66,6 +66,10 @@ app.get('/inventory', (req: Request, res: Response) => {
   }
 });
 
+app.get('/test', (req: Request, res: Response) => {
+  res.send('All good.');
+});
+
 app.listen(port, () => {
   console.log( `server started at http://localhost:${ port }` );
 });
