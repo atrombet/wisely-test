@@ -44,6 +44,9 @@ export default {
     datePicker: false,
     availableTimes: []
   }),
+  props: [
+    'reservations'
+  ],
   methods: {
     allowedDates (val) {
       return new Date(val) >= new Date();
@@ -51,7 +54,14 @@ export default {
     updateAvailableTimes () {
       this.datePicker = false;
       axios.get(`http://localhost:9090/inventory?date=${this.form.date}`).then(response => {
-        this.availableTimes = response.data;
+        this.availableTimes = response.data.map(inv => {
+          // Maps the inventory to a format for v-select
+          return { 
+            text: inv.time,
+            value: inv.time,
+            disabled: !inv.available
+          }
+        });
       });
     },
     reserve () {
