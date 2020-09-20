@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="resForm" class="resForm" v-model="valid">
+  <v-form ref="resForm" class="pageSection" v-model="valid">
     <h2 class="mt-2 mb-4">New Reservation</h2>
     <v-text-field v-model="form.name" :rules="nameRules" label="Name" placholder="Name" outlined></v-text-field>
     <v-text-field v-model="form.email" :rules="emailRules" label="Email" placholder="Email" outlined></v-text-field>
@@ -84,9 +84,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.resForm {
-  width: 400px;
-}
-</style>

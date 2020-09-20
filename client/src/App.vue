@@ -16,3 +16,9 @@
 <script>
 export default {};
 </script>
+
+<style lang="scss">
+.pageSection {
+  width: 400px;
+}
+</style>
