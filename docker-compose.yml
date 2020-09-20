@@ -44,7 +44,7 @@ services:
     stdin_open: true
     tty: true
     environment:
-      - API_BASE_URL=localhost:9090
+      - VUE_APP_API_BASE=http://localhost:9090
     volumes:
       - ./client:/app
       - /app/node_modules

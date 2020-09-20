@@ -22,35 +22,38 @@ import { convertTime } from '../functions';
 
 export default {
   name: 'ReservationForm',
-  data: () => ({
-    valid: true,
-    form: {
-      name: '',
-      email: '',
-      party_size: null,
-      date: '',
-      time: ''
-    },
-    nameRules: [
-      v => !!v || 'Name is required'
-    ],
-    emailRules: [
-      v => !!v || 'Email is required',
-      v => /.+@.+\..+/.test(v) || 'Email must be valid',
-    ],
-    partySizeRules: [
-      v => !!v || 'Party Size is required',
-      v => v > 0 || 'Party Size must be greater than zero'
-    ],
-    datePicker: false,
-    dateRules: [
-      v => !!v || 'Date is required',
-    ],
-    availableTimes: [],
-    timeRules: [
-      v => !!v || 'Time is required',
-    ]
-  }),
+  data () {
+    return {
+      apiUrl: process.env.VUE_APP_API_BASE,
+      valid: true,
+      form: {
+        name: '',
+        email: '',
+        party_size: null,
+        date: '',
+        time: ''
+      },
+      nameRules: [
+        v => !!v || 'Name is required'
+      ],
+      emailRules: [
+        v => !!v || 'Email is required',
+        v => /.+@.+\..+/.test(v) || 'Email must be valid',
+      ],
+      partySizeRules: [
+        v => !!v || 'Party Size is required',
+        v => v > 0 || 'Party Size must be greater than zero'
+      ],
+      datePicker: false,
+      dateRules: [
+        v => !!v || 'Date is required',
+      ],
+      availableTimes: [],
+      timeRules: [
+        v => !!v || 'Time is required',
+      ]
+    }
+  },
   props: [
     'reservations'
   ],
@@ -60,7 +63,7 @@ export default {
     },
     updateAvailableTimes () {
       this.datePicker = false;
-      axios.get(`http://localhost:9090/inventory?date=${this.form.date}`).then(response => {
+      axios.get(`${this.apiUrl}/inventory?date=${this.form.date}`).then(response => {
         this.availableTimes = response.data.map(inv => {
           // Maps the inventory to a format for v-select
           return { 

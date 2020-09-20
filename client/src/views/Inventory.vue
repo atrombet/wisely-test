@@ -36,6 +36,7 @@ export default {
   },
   data () {
     return {
+      apiUrl: process.env.VUE_APP_API_BASE,
       date: '',
       datePicker: false,
       inventory: null,
@@ -45,12 +46,12 @@ export default {
   },
   methods: {
     fetchInventory () {
-      axios.get(`http://localhost:9090/inventory?date=${this.date}`).then(response => {
+      axios.get(`${this.apiUrl}/inventory?date=${this.date}`).then(response => {
         this.inventory = response.data;
       });
     },
     createInventory (newInventory) {
-      axios.post('http://localhost:9090/inventory', newInventory).then(response => {
+      axios.post(`${this.apiUrl}/inventory`, newInventory).then(response => {
         this.inventory = response.data;
         this.$refs.invForm.reset();
         this.snackbarMessage = 'Inventory created!';

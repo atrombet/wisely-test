@@ -25,13 +25,16 @@ export default {
     ReservationForm,
     ReservationList
   },
-  data: () => ({
-    reservations: [],
-    showSnackbar: false,
-    snackbarMessage: ''
-  }),
+  data () {
+    return {
+      apiUrl: process.env.VUE_APP_API_BASE,
+      reservations: [],
+      showSnackbar: false,
+      snackbarMessage: ''
+    }
+  },
   mounted () {
-    axios.get('http://localhost:9090/reservations').then(response => {
+    axios.get(`${this.apiUrl}/reservations`).then(response => {
       this.reservations = response.data.map(res => {
         return { ...res, time: convertTime(res.time) }
       });
@@ -39,7 +42,7 @@ export default {
   },
   methods: {
     onNewReservation (reservation) {
-      axios.post('http://localhost:9090/reservations', reservation).then(response => {
+      axios.post(`${this.apiUrl}/reservations`, reservation).then(response => {
         const newRes = response.data;
         this.reservations.push(newRes);
         this.$refs.formComponent.clear();
