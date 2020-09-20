@@ -11,7 +11,7 @@ CREATE TABLE inventory(
   id SERIAL PRIMARY KEY NOT NULL,
   date DATE NOT NULL,
   time TIME NOT NULL,
-  seatings int NOT NULL
+  parties int NOT NULL
 );
 
 INSERT INTO reservation(name, email, party_size, date, time) VALUES
@@ -22,7 +22,7 @@ INSERT INTO reservation(name, email, party_size, date, time) VALUES
   ('Cindy', 'cindy@email.com', 4, '2020-09-17', '03:15 PM'),
   ('Cali', 'cali@email.com', 3, '2020-09-17', '03:15 PM');
 
-INSERT INTO inventory(date, time, seatings) VALUES
+INSERT INTO inventory(date, time, parties) VALUES
   ('2020-09-16', '2:00 PM', 3),
   ('2020-09-16', '2:15 PM', 3),
   ('2020-09-16', '2:30 PM', 3),

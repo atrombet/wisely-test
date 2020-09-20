@@ -5,7 +5,7 @@
       <v-list>
         <v-list-item-group>
           <v-list-item v-for="inv in inventory" :key="inv.id">
-            <span><strong>{{convertedTime(inv.time)}}</strong> - {{inv.seatings}} parties</span>
+            <span><strong>{{convertedTime(inv.time)}}</strong> - {{inv.parties}} parties</span>
           </v-list-item>
         </v-list-item-group>
       </v-list>

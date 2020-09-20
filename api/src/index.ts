@@ -64,7 +64,7 @@ createConnection({
             const numberReserved = dateReservations.filter(res => res.date === inv.date && res.time === inv.time).length;
             return {
               ...inv,
-              available: inv.seatings > numberReserved
+              available: inv.parties > numberReserved
             };
           })
         );

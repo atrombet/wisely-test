@@ -1,9 +1,9 @@
 <template>
   <v-form ref="resForm" class="pageSection" v-model="valid">
     <h2 class="mt-2 mb-4">New Reservation</h2>
-    <v-text-field v-model="form.name" :rules="nameRules" label="Name" placholder="Name" outlined></v-text-field>
-    <v-text-field v-model="form.email" :rules="emailRules" label="Email" placholder="Email" outlined></v-text-field>
-    <v-text-field v-model="form.party_size" type="number" :rules="partySizeRules" label="Party Size" placholder="Party Size" outlined></v-text-field>
+    <v-text-field v-model="form.name" :rules="nameRules" label="Name" outlined></v-text-field>
+    <v-text-field v-model="form.email" :rules="emailRules" label="Email" outlined></v-text-field>
+    <v-text-field v-model="form.party_size" type="number" :rules="partySizeRules" label="Party Size" outlined></v-text-field>
     <v-menu v-model="datePicker" transition="scale-transition" offset-y min-width="290px">
       <template v-slot:activator="{ on, attrs }">
         <v-text-field v-model="form.date" :rules="dateRules" label="Date" readonly v-bind="attrs" v-on="on" outlined></v-text-field>

@@ -12,6 +12,6 @@ export class Inventory {
   time: string;
 
   @Column({ type: 'int' })
-  seatings: number;
+  parties: number;
 }
 

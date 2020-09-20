@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="d-flex">
-      <InventoryForm class="mr-16" />
+      <InventoryForm :selectedDate="date" class="mr-16" />
       <InventoryList :inventory="inventory" />
     </div>
   </div>
