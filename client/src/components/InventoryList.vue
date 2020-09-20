@@ -1,11 +1,16 @@
 <template>
   <div class="pageSection">
     <h2>Inventory for Selected Date</h2>
-    <div v-if="!!inventory.length">
-      <v-list>
+    <div v-if="!!inventory">
+      <p v-if="!inventory.length">No inventory for selected date.</p>
+      <v-list v-else>
         <v-list-item-group>
           <v-list-item v-for="inv in inventory" :key="inv.id">
-            <span><strong>{{convertedTime(inv.time)}}</strong> - {{inv.parties}} parties</span>
+            <span>
+              <span><strong>{{convertedTime(inv.time)}}</strong> - {{inv.parties}}</span>
+              <span v-if="inv.parties > 1"> parties</span>
+              <span v-else> party</span>
+            </span>
           </v-list-item>
         </v-list-item-group>
       </v-list>

@@ -12,9 +12,15 @@
       </div>
     </div>
     <div class="d-flex">
-      <InventoryForm :selectedDate="date" class="mr-16" />
+      <InventoryForm :selectedDate="date" ref="invForm" class="mr-16" v-on:create-inventory="createInventory" />
       <InventoryList :inventory="inventory" />
     </div>
+    <v-snackbar color="success" v-model="showSnackbar" top>
+      {{snackbarMessage}}
+      <template v-slot:action="{ attrs }">
+        <v-btn text v-bind="attrs" @click="showSnackbar = false">OK</v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -32,13 +38,23 @@ export default {
     return {
       date: '',
       datePicker: false,
-      inventory: []
+      inventory: null,
+      showSnackbar: false,
+      snackbarMessage: ''
     }
   },
   methods: {
     fetchInventory () {
       axios.get(`http://localhost:9090/inventory?date=${this.date}`).then(response => {
         this.inventory = response.data;
+      });
+    },
+    createInventory (newInventory) {
+      axios.post('http://localhost:9090/inventory', newInventory).then(response => {
+        this.inventory = response.data;
+        this.$refs.invForm.reset();
+        this.snackbarMessage = 'Inventory created!';
+        this.showSnackbar = true;
       });
     }
   }

@@ -3,6 +3,7 @@ import cors from 'cors';
 import bodyparser from 'body-parser';
 import { Connection, createConnection } from 'typeorm';
 import { Reservation, Inventory } from './entities';
+import { getTimesFromRange } from './functions';
 
 const app: Application = express();
 const port = 9090; // default port to listen
@@ -23,6 +24,15 @@ createConnection({
 
   const RESERVATION = connection.getRepository(Reservation);
 
+  app.get('/reservations', async (req: Request, res: Response) => {
+    try {
+      const allReservations = await RESERVATION.find();
+      res.status(200).json(allReservations);  
+    } catch {
+      res.status(400).send('Could not fetch reservations.');
+    }
+  });
+
   app.post('/reservations', async (req: Request, res: Response) => {
     try {
       const { body } = req;
@@ -35,15 +45,6 @@ createConnection({
       res.status(200).json({ ...body, id: dbResponse.identifiers[0].id });
     } catch {
       res.status(400).send('Your reservation could not be created.');
-    }
-  });
-
-  app.get('/reservations', async (req: Request, res: Response) => {
-    try {
-      const allReservations = await RESERVATION.find();
-      res.status(200).json(allReservations);  
-    } catch {
-      res.status(400).send('Could not fetch reservations.');
     }
   });
 
@@ -75,6 +76,33 @@ createConnection({
       res.status(400).send('Could not fetch inventory.');
     }
   });
+
+  app.post('/inventory', async (req: Request, res: Response) => {
+    try {
+      const { range, date, parties } = req.body;
+      if (range) {
+        const times = getTimesFromRange(range);
+        await INVENTORY
+          .createQueryBuilder()
+          .insert()
+          .into(Inventory)
+          .values(times.map(time => {
+            return { date, parties, time }
+          }))
+          .execute();
+        const dateInventory = await INVENTORY.find({ where: { date: date } });
+        res.status(200).json(dateInventory);
+      } else {
+        res.status(400).send(`
+          Please include a "range" property in the body.
+          Range should be an array of two integers from 0 to 95 where 0 = 12:00 AM and 95 = 11:45 PM.
+          EX: [3, 87]
+        `);
+      }
+    } catch {
+      res.status(400).send('Inventory could not be created.');
+    }
+  })
 
   /*******************************
    * /test Endpoints

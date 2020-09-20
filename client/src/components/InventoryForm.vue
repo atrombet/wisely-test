@@ -1,7 +1,7 @@
 <template>
   <div class="pageSection">
     <h2>Create Inventory</h2>
-    <v-form v-if="selectedDate" class="mt-4" v-model="valid">
+    <v-form v-if="selectedDate" class="mt-4" ref="invForm" v-model="valid">
       <div>
         <label class="timeRangeLabel">Time Range</label>
         <v-range-slider class="mt-2" :min="sliderMin" :max="sliderMax" v-model="range">
@@ -9,7 +9,9 @@
           <template v-slot:append><span class="timeRangeValue">{{maxSelectedTime}}</span></template>
         </v-range-slider>
       </div>
-      <v-text-field v-model="form.parties" type="number" :rules="partiesRules" label="Number of Parties" outlined></v-text-field>
+      <v-text-field v-model="parties" type="number" :rules="partiesRules" label="Number of Parties" outlined></v-text-field>
+      <v-btn class="mr-4" @click="reset">Reset</v-btn>
+    <v-btn color="success" @click="addInventory" :disabled="!valid">Add Inventory</v-btn>
     </v-form>
     <p v-else>Please select a date to create inventory.</p>
   </div>
@@ -27,15 +29,10 @@ export default {
       sliderMin: 0,
       sliderMax: 95,
       range: [40, 80],
-      form: {
-        date: this.selectedDate,
-        parties: '',
-        startTime: '',
-        endTime: ''
-      },
+      parties: '',
       partiesRules: [
-        v => !!v || 'Parties is required',
-        v => v > 0 || 'Parties must be greater than zero'
+        v => !!v || 'Number of Parties is required',
+        v => v >= 0 || 'Number of Parties must be greater than or equal to zero'
       ]
     }
   },
@@ -55,6 +52,17 @@ export default {
       const minutes = (tick % 4) * 15;
       const options = { hour: 'numeric', minute: 'numeric', hour12: true };
       return new Date(2020, 1, 1, hour24, minutes).toLocaleString('en-US', options);
+    },
+    addInventory () {
+      this.$emit('create-inventory', { 
+        date: this.selectedDate,
+        range: this.range,
+        parties: this.parties
+      });
+    },
+    reset () {
+      this.$refs.invForm.reset();
+      this.range = [40, 80];
     }
   }
 }
