@@ -6,11 +6,11 @@
     <v-text-field v-model="form.party_size" type="number" :rules="partySizeRules" label="Party Size" placholder="Party Size" outlined></v-text-field>
     <v-menu v-model="datePicker" transition="scale-transition" offset-y min-width="290px">
       <template v-slot:activator="{ on, attrs }">
-        <v-text-field v-model="form.date" label="Date" readonly v-bind="attrs" v-on="on" outlined></v-text-field>
+        <v-text-field v-model="form.date" :rules="dateRules" label="Date" readonly v-bind="attrs" v-on="on" outlined></v-text-field>
       </template>
       <v-date-picker v-model="form.date" @input="updateAvailableTimes"></v-date-picker>
     </v-menu>
-    <v-select :disabled="!availableTimes.length" v-model="form.time" label="Time" :items="availableTimes" outlined></v-select>
+    <v-select :disabled="!availableTimes.length" v-model="form.time" :rules="timeRules" label="Time" :items="availableTimes" outlined></v-select>
     <v-btn class="mr-4" @click="clear">Clear</v-btn>
     <v-btn color="success" @click="reserve" :disabled="!valid">Reserve</v-btn>
   </v-form>
@@ -43,7 +43,13 @@ export default {
       v => v > 0 || 'Party Size must be greater than zero'
     ],
     datePicker: false,
-    availableTimes: []
+    dateRules: [
+      v => !!v || 'Date is required',
+    ],
+    availableTimes: [],
+    timeRules: [
+      v => !!v || 'Time is required',
+    ]
   }),
   props: [
     'reservations'
