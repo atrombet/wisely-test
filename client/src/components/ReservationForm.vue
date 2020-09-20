@@ -3,7 +3,7 @@
     <h2 class="mt-2 mb-4">New Reservation</h2>
     <v-text-field v-model="form.name" :rules="nameRules" label="Name" placholder="Name" outlined></v-text-field>
     <v-text-field v-model="form.email" :rules="emailRules" label="Email" placholder="Email" outlined></v-text-field>
-    <v-text-field v-model="form.partySize" type="number" :rules="partySizeRules" label="Party Size" placholder="Party Size" outlined></v-text-field>
+    <v-text-field v-model="form.party_size" type="number" :rules="partySizeRules" label="Party Size" placholder="Party Size" outlined></v-text-field>
     <v-menu v-model="datePicker" transition="scale-transition" offset-y min-width="290px">
       <template v-slot:activator="{ on, attrs }">
         <v-text-field v-model="form.date" label="Date" readonly v-bind="attrs" v-on="on" outlined></v-text-field>
@@ -12,12 +12,13 @@
     </v-menu>
     <v-select :disabled="!availableTimes.length" v-model="form.time" label="Time" :items="availableTimes" outlined></v-select>
     <v-btn class="mr-4" @click="clear">Clear</v-btn>
-    <v-btn color="success" @click="reserve">Reserve</v-btn>
+    <v-btn color="success" @click="reserve" :disabled="!valid">Reserve</v-btn>
   </v-form>
 </template>
 
 <script>
 import axios from 'axios';
+import { convertTime } from '../functions';
 
 export default {
   name: 'ReservationForm',
@@ -26,7 +27,7 @@ export default {
     form: {
       name: '',
       email: '',
-      partySize: null,
+      party_size: null,
       date: '',
       time: ''
     },
@@ -57,8 +58,8 @@ export default {
         this.availableTimes = response.data.map(inv => {
           // Maps the inventory to a format for v-select
           return { 
-            text: inv.time,
-            value: inv.time,
+            text: convertTime(inv.time),
+            value: convertTime(inv.time),
             disabled: !inv.available
           }
         });

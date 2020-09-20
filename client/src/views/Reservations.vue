@@ -18,6 +18,7 @@
 import ReservationForm from '../components/ReservationForm';
 import ReservationList from '../components/ReservationList';
 import axios from 'axios';
+import { convertTime } from '../functions';
 
 export default {
   components: {
@@ -31,7 +32,9 @@ export default {
   }),
   mounted () {
     axios.get('http://localhost:9090/reservations').then(response => {
-      this.reservations = response.data;
+      this.reservations = response.data.map(res => {
+        return { ...res, time: convertTime(res.time) }
+      });
     });
   },
   methods: {

@@ -29,11 +29,6 @@ services:
       dockerfile: ./api/dockerfile
     stdin_open: true
     tty: true
-    environment:
-      - DATABASE_CONNECTION_STRING=postgres://postgres:password@db/wisely_test
-      - NODE_ENV=development
-      - APP_ENV=development
-      - PORT=8080
     depends_on:
       - db
     ports:
