@@ -11,7 +11,7 @@ export const getAllReservations = async (req: Request, res: Response) => {
     const allReservations = await resRepo.find();
     res.status(200).json(allReservations);  
   } catch {
-    res.status(400).send('Could not fetch reservations.');
+    res.status(500).send('Could not fetch reservations.');
   }
 };
 
@@ -30,6 +30,6 @@ export const createReservation = async (req: Request, res: Response) => {
       .execute();
     res.status(200).json({ ...body, id: dbResponse.identifiers[0].id });
   } catch {
-    res.status(400).send('Your reservation could not be created.');
+    res.status(500).send('Your reservation could not be created.');
   }
 };

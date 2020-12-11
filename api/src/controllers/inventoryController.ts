@@ -27,7 +27,7 @@ export const getInventoryByDate = async (req: Request, res: Response) => {
       res.status(400).send('Please pass a date query. Ex: /inventory?date=2020-09-20');
     }
   } catch {
-    res.status(400).send('Could not fetch inventory.');
+    res.status(500).send('Could not fetch inventory.');
   }
 };
 
@@ -58,6 +58,6 @@ export const createInventory = async (req: Request, res: Response) => {
       `);
     }
   } catch {
-    res.status(400).send('Inventory could not be created.');
+    res.status(500).send('Inventory could not be created.');
   }
 };
